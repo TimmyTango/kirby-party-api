@@ -1,7 +1,7 @@
 const axios = require('axios');
 
 const sonos = axios.create({
-    baseURL: 'http://localhost:5005/'
+    baseURL: 'http://tango.tplinkdns.com:5005/'
 });
 
 function generateRandomIndices(numOfIndices, maxIndex) {
