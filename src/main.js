@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 const express = require('express');
 const app = express();
 const http = require('http').createServer(app);
@@ -80,8 +81,8 @@ async function main() {
         });
     });
 
-    http.listen(3000, function() {
-        console.log('listening on *:3000');
+    http.listen(3005, function() {
+        console.log('listening on *:3005');
     });
 }
 
@@ -106,6 +107,10 @@ app.post('/', (req, res) => {
             playNextTrack();
         }
     }
+});
+
+app.get('/', (req, res) => {
+    res.send('server is up');
 });
 
 main();
