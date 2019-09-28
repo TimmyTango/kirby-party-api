@@ -100,7 +100,11 @@ let ignoreNextUpdate = false;
 app.post('/', (req, res) => {
     const { type, data } = req.body;
     if (type === 'transport-state' && data.roomName === 'Bathroom' && isNextTrack(data.state.currentTrack)) {
-        playNextTrack();
+        if (ignoreNextUpdate) {
+            ignoreNextUpdate = false;
+        } else {
+            playNextTrack();
+        }
     }
 });
 
