@@ -61,6 +61,9 @@ async function main() {
     io.on('connection', socket => {
         const addr = socket.handshake.address;
         console.log('a user connected', addr);
+        socket.on('generate-token', () => {
+            socket.emit('token-generated', Math.floor(Math.random() * 1000000));
+        });
         socket.on('request-state', () => {
             socket.emit('update-state', state);
         });
@@ -71,9 +74,9 @@ async function main() {
                 votes
             });
         });
-        socket.on('vote', index => {
-            if (!hasVoted[addr] && index >= 0 && index < 4) {
-                hasVoted[addr] = true;
+        socket.on('vote', ({ index, token }) => {
+            if (!hasVoted[token] && index >= 0 && index < 4) {
+                hasVoted[token] = true;
                 votes[index]++;
                 io.emit('vote-cast', votes);
             }
