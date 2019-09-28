@@ -107,6 +107,7 @@ app.post('/', (req, res) => {
             playNextTrack();
         }
     }
+    res.send({});
 });
 
 app.get('/', (req, res) => {
