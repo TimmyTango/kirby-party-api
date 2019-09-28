@@ -46,17 +46,11 @@ module.exports = {
     },
     playSong: async index => {
         sonos.get('Bathroom/trackseek/' + index);
+    },
+    pause: () => {
+        sonos.get('Bathroom/pauseall');
+    },
+    play: () => {
+        sonos.get('Bathroom/resumeall');
     }
 };
-
-// export async function getNowPlaying() {
-//     const { currentTrack } = await getState();
-//     return currentTrack;
-// }
-
-// export async function getTimeLeft() {
-//     const { currentTrack, elapsedTime } = await getState();
-//     return currentTrack.duration - elapsedTime;
-// }
-
-// export async function getRandomTracks
