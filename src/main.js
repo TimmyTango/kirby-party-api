@@ -67,10 +67,13 @@ async function main() {
         socket.on('request-state', () => {
             socket.emit('update-state', state);
         });
-        socket.on('request-choices', () => {
+        socket.on('request-choices', token => {
+            let canVote = true;
+            if (token)
+                canVote = !hasVoted[token];
             socket.emit('update-choices', {
                 tracks: choices,
-                canVote: !hasVoted[addr],
+                canVote,
                 votes
             });
         });
