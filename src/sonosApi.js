@@ -1,7 +1,9 @@
 const axios = require('axios');
+const { roomName, sonosApiUrl } = require('./config');
 
 const sonos = axios.create({
-    baseURL: 'http://tango.tplinkdns.com:5005/'
+    baseURL: sonosApiUrl
+    // baseURL: 'http://tango.tplinkdns.com:5005/'
 });
 
 function generateRandomIndices(numOfIndices, maxIndex) {
@@ -32,25 +34,39 @@ function generateRandomIndices(numOfIndices, maxIndex) {
 
 module.exports = {
     getState: async () => {
-        const { data } = await sonos.get('Bathroom/state');
-        return data;
+        try {
+            const { data } = await sonos.get(`${roomName}/state`);
+            return data;
+        } catch (err) {
+            console.error(err);
+            return null;
+        }
     },
     getRandomTracks: async () => {
-        const { data } = await sonos.get('Bathroom/queue');
-
-        const indices = generateRandomIndices(4, data.length);
-        return indices.map(index => {
-            data[index].trackIndex = index + 1;
-            return data[index];
-        });
+        try {
+            const { data } = await sonos.get(`${roomName}/queue`);
+    
+            const indices = generateRandomIndices(4, data.length);
+            return indices.map(index => {
+                data[index].trackIndex = index + 1;
+                return data[index];
+            });
+        } catch (err) {
+            console.error(err);
+            return null;
+        }
     },
     playSong: async index => {
-        sonos.get('Bathroom/trackseek/' + index);
+        try {
+            sonos.get(`${roomName}/trackseek/${index}`);
+        } catch (err) {
+            console.error(err);
+        }
     },
     pause: () => {
-        sonos.get('Bathroom/pauseall');
+        sonos.get(`${roomName}/pauseall`);
     },
     play: () => {
-        sonos.get('Bathroom/resumeall');
+        sonos.get(`${roomName}/resumeall`);
     }
 };
